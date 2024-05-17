@@ -1,0 +1,17 @@
+/* src/components/Common/Button/Button.css */
+
+.common-button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .common-button:hover {
+    background-color: #0056b3;
+  }
+  

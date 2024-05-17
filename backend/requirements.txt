@@ -1,0 +1,9 @@
+Flask
+flask-cors
+waitress
+pymongo
+numpy
+opencv-python
+ultralytics
+psycopg2-binary
+scikit-image

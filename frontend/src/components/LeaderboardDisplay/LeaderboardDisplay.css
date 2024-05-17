@@ -1,0 +1,78 @@
+.leaderboard {
+  text-align: center;
+  margin-top: 20px;
+  padding-bottom: 50px; /* Ensure space at the bottom */
+  background-color: #f6f6f6;
+}
+
+.leaderboard h2 {
+  display: inline-block;
+  background-color: rgb(235, 235, 235);
+  padding: 10px 90px;
+  margin-top: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.podium {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 200px;
+  margin-top: 20px;
+  position: relative;
+}
+
+.podium-step {
+  width: 100px;
+  margin: 0 10px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+  animation: growUp 1s ease-out;
+}
+
+.podium-step p {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.trophy-icon {
+  width: 50px;
+  height: 50px;
+  margin-top: 10px;
+}
+
+.step-1 {
+  height: 150px;
+  background-color: #ffe867;
+}
+
+.step-2 {
+  height: 130px;
+  background-color: #cccbcb;
+}
+
+.step-3 {
+  height: 110px;
+  background-color: #e7b380;
+}
+
+.step-4,
+.step-5,
+.step-6 {
+  height: 90px;
+  background-color: #eebdf5;
+}
+
+@keyframes growUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

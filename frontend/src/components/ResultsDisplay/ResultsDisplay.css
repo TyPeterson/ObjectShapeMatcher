@@ -1,0 +1,52 @@
+
+.results-display {
+  text-align: center;
+  margin-top: 20px;
+  background-color: #f6f6f6; /* Light gray background */
+  padding: 30px 20px 20px 20px;
+  border-radius: 10px; /* Rounded corners for a polished look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
+
+.results-display p {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333333;
+}
+
+.images-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.methods-text {
+  display: inline-block;
+  background-color: rgb(235, 235, 235);
+  padding: 10px 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+.image-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+}
+
+.result-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.image-item p {
+  margin-top: 10px;
+}
+
