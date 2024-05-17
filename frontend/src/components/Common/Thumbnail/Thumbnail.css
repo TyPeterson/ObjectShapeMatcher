@@ -1,0 +1,19 @@
+/* src/components/Common/Thumbnail/Thumbnail.css */
+
+.thumbnail {
+    padding: 5px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+  }
+  
+  .thumbnail img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .thumbnail:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  }
+  

@@ -1,0 +1,22 @@
+.ranking-display {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+  }
+  
+  .rank-button {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    border: 1px solid #000;
+    background-color: #fff;
+    border-radius: 25%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .rank-button.selected {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
