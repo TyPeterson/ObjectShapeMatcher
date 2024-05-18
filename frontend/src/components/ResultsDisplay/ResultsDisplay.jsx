@@ -9,7 +9,6 @@ const ResultsDisplay = ({ resultString, maskUrl, categoryId, objectType, compare
     <div className="results-display">
       {resultString && (
         <div>
-          {/* <p>Comparison result: <i>{resultString}</i></p> */}
           <div className="images-container">
             <div className="image-item">
               {maskUrl && <img src={maskUrl} alt="Mask" className="result-image" />}

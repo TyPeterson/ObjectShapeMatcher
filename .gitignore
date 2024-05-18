@@ -1,6 +1,8 @@
+todo.md
+
 backend/venv/
 backend/__pycache__/
-
+backend/static/images/*
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 

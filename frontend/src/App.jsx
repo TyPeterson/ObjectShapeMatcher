@@ -155,10 +155,15 @@ const App = () => {
     return Object.values(uniqueResults);
   };
 
-  const handleRankingSelect = (resultString, rank) => {
+  const handleRankingSelect = (resultString, rank, prevRank = null) => {
     setRankings(prev => {
       const newRankings = { ...prev };
       const currentRankings = newRankings[currentCombination] || {};
+
+      // If there was a previous rank, remove it
+      if (prevRank) {
+        delete currentRankings[Object.keys(currentRankings).find(key => currentRankings[key] === prevRank)];
+      }
 
       // Remove the rank from any result that currently has it
       Object.keys(currentRankings).forEach(key => {
@@ -251,24 +256,24 @@ const App = () => {
                 objectType={objectType} // Use preserved object type
                 compareMethods={methods} // Pass compareMethods used in the comparison
               />
-              {compareAllSelected && comparisonResults.length > 1 && (
-                <RankingDisplay
-                  resultString={result.most_similar}
-                  totalResults={comparisonResults.length}
-                  selectedRank={rankings[currentCombination]?.[result.most_similar]}
-                  onRankingSelect={handleRankingSelect}
-                />
-              )}
             </div>
           ))}
           {compareAllSelected && comparisonResults.length > 1 && (
-            <button
-              className={`submit-rankings-button ${isSubmitDisabled ? 'disabled' : submitted ? 'submitted' : ''}`}
-              onClick={handleSubmitRankings}
-              disabled={isSubmitDisabled}
-            >
-              {submitted ? 'Submitted!' : 'Submit Rankings'}
-            </button>
+            <>
+              <RankingDisplay
+                results={comparisonResults}
+                categoryId={comparisonCategory} // Use preserved comparison category ID
+                selectedRanks={rankings[currentCombination] || {}}
+                onRankingSelect={handleRankingSelect}
+              />
+              <button
+                className={`submit-rankings-button ${isSubmitDisabled ? 'disabled' : submitted ? 'submitted' : ''}`}
+                onClick={handleSubmitRankings}
+                disabled={isSubmitDisabled}
+              >
+                {submitted ? 'Submitted!' : 'Submit Rankings'}
+              </button>
+            </>
           )}
         </div>
       )}
