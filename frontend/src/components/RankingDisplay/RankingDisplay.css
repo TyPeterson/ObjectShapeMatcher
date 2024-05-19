@@ -3,10 +3,10 @@
 .ranking-container {
   text-align: center;
   margin-top: 20px;
-  background-color: #f6f6f6; /* Light gray background */
+  background-color: #f6f6f6;
   padding: 30px 20px 20px 20px;
-  border-radius: 10px; /* Rounded corners for a polished look */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   width: 80%;
   height: 600px;
 }

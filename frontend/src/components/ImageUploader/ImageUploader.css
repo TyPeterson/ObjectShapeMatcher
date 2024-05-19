@@ -1,5 +1,6 @@
+/* src/components/ImageUploader/ImageUploader.css */
+
 .dropzone {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,4 +19,3 @@
   margin: 50px;
   height: 200px;
 }
-

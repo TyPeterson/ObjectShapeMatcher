@@ -3,7 +3,7 @@ import './RankingDisplay.css';
 
 const RankingDisplay = ({ results, categoryId, selectedRanks, onRankingSelect }) => {
   const [draggedResult, setDraggedResult] = useState(null);
-  const [draggedFromRank, setDraggedFromRank] = useState(null); // Track where the drag originated from
+  const [draggedFromRank, setDraggedFromRank] = useState(null);
 
   const handleDragStart = (result, rank = null) => {
     setDraggedResult(result);
@@ -13,7 +13,6 @@ const RankingDisplay = ({ results, categoryId, selectedRanks, onRankingSelect })
   const handleDrop = (rank) => {
     if (draggedResult) {
       onRankingSelect(draggedResult, rank, draggedFromRank);
-      console.log(`Placed result: ${draggedResult} in rank: ${rank}`);
       setDraggedResult(null);
       setDraggedFromRank(null);
     }
@@ -64,7 +63,6 @@ const RankingDisplay = ({ results, categoryId, selectedRanks, onRankingSelect })
           <div
             key={result.most_similar}
             className="result-item"
-            // draggable is true if the result is not already ranked
             draggable={!Object.keys(selectedRanks).includes(result.most_similar)}
             onDragStart={() => handleDragStart(result.most_similar)}
             onDragOver={(e) => e.preventDefault()}
@@ -92,7 +90,7 @@ const RankingDisplay = ({ results, categoryId, selectedRanks, onRankingSelect })
           <div
             key={index}
             className="ranking-slot"
-            style={{ backgroundColor: getBackgroundColor(index) , borderColor: getBorderColor(index), borderStyle: 'solid'}}
+            style={{ backgroundColor: getBackgroundColor(index), borderColor: getBorderColor(index), borderStyle: 'solid' }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(index + 1)}
           >

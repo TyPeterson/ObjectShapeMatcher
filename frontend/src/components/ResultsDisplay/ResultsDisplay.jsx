@@ -2,7 +2,6 @@ import React from 'react';
 import './ResultsDisplay.css';
 
 const ResultsDisplay = ({ resultString, maskUrl, categoryId, objectType, compareMethods }) => {
-  // Correct the path to be relative from the public folder
   const resultImageUrl = `/${categoryId}_images/${resultString}.png`;
 
   return (
@@ -19,7 +18,7 @@ const ResultsDisplay = ({ resultString, maskUrl, categoryId, objectType, compare
               <p>{resultString}</p>
             </div>
           </div>
-          <p className = "methods-text">Methods: <i>{compareMethods.join(', ')}</i></p>
+          <p className="methods-text">Methods: <i>{compareMethods.join(', ')}</i></p>
         </div>
       )}
     </div>

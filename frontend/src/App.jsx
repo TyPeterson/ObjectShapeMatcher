@@ -29,21 +29,21 @@ const App = () => {
   const [selectedObject, setSelectedObject] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedMethod, setSelectedMethod] = useState(null);
-  const [comparisonResults, setComparisonResults] = useState([]); // Initialize as an array
-  const [comparisonCategory, setComparisonCategory] = useState(null); // Preserve the category ID used for comparison
-  const [loading, setLoading] = useState(false); // Add loading state
-  const [rankings, setRankings] = useState({}); // Initialize rankings as an object
-  const [compareAllSelected, setCompareAllSelected] = useState(false); // Track if compare_all is selected
-  const [submitted, setSubmitted] = useState(false); // Track if rankings are submitted
-  const [currentCombination, setCurrentCombination] = useState(''); // Track current object-category combination
-  const [isProcessing, setIsProcessing] = useState(false); // Add isProcessing state
-  const [showLeaderboard, setShowLeaderboard] = useState(false); // Track if leaderboard should be shown
-  const [scrollToLeaderboard, setScrollToLeaderboard] = useState(false); // Track if we should scroll to leaderboard
+  const [comparisonResults, setComparisonResults] = useState([]);
+  const [comparisonCategory, setComparisonCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [rankings, setRankings] = useState({});
+  const [compareAllSelected, setCompareAllSelected] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [currentCombination, setCurrentCombination] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [scrollToLeaderboard, setScrollToLeaderboard] = useState(false);
 
   const leaderboardRef = useRef(null);
 
   useEffect(() => {
-    setSubmitted(false); // Reset submitted state
+    setSubmitted(false);
     if (selectedObject && selectedCategory) {
       setCurrentCombination(`${selectedObject.object_id}-${selectedCategory.id}`);
     } else {
@@ -59,46 +59,40 @@ const App = () => {
   }, [scrollToLeaderboard]);
 
   const handleImageProcessed = (data) => {
-    console.log("Image processed data:", data);
     setImageData(data);
     setSelectedObject(null);
     setSelectedCategory(null);
     setSelectedMethod(null);
     setComparisonResults([]);
-    setComparisonCategory(null); // Reset comparison category
+    setComparisonCategory(null);
     setRankings({});
     setCompareAllSelected(false);
-    setSubmitted(false); // Reset submitted state
+    setSubmitted(false);
     setLoading(false);
-    setIsProcessing(false); // Reset processing state
-    setShowLeaderboard(false); // Hide leaderboard when a new image is processed
-    setCurrentCombination(''); // Reset current combination
+    setIsProcessing(false);
+    setShowLeaderboard(false);
+    setCurrentCombination('');
   };
 
   const handleSelectObject = (object) => {
-    console.log("Selected Object:", object);
     setSelectedObject(object);
   };
 
   const handleSelectCategory = (category) => {
-    console.log("Selected Category:", category);
     setSelectedCategory(category);
   };
 
   const handleSelectMethod = (method) => {
-    console.log("Selected Method:", method);
     setSelectedMethod(method);
   };
 
   const handleCompare = async () => {
     if (selectedObject && selectedCategory && selectedMethod) {
-      console.log("Comparing:", selectedObject, selectedCategory, selectedMethod);
-      setLoading(true); // Set loading state to true
+      setLoading(true);
 
       if (selectedMethod.id === 'compare_all') {
-        // Compare using all methods simultaneously
         const methods = ['hamming', 'ssim', 'chamfer', 'hausdorff', 'dice', 'jaccard'];
-        const comparePromises = methods.map(method => 
+        const comparePromises = methods.map(method =>
           compareObjects(
             selectedObject.mask_coords,
             selectedCategory.id,
@@ -114,13 +108,11 @@ const App = () => {
           return acc;
         }, {});
 
-        console.log("Comparison results (all methods):", resultsByMethod);
         const uniqueResults = groupUniqueResults(resultsByMethod, selectedObject.object_type);
-        setComparisonResults(uniqueResults); // Store all results as an array
-        setCompareAllSelected(true); // Set compare_all as selected
-        setRankings(prev => ({ ...prev, [currentCombination]: {} })); // Reset rankings for current combination
+        setComparisonResults(uniqueResults);
+        setCompareAllSelected(true);
+        setRankings(prev => ({ ...prev, [currentCombination]: {} }));
       } else {
-        // Compare using a single method
         const result = await compareObjects(
           selectedObject.mask_coords,
           selectedCategory.id,
@@ -128,14 +120,13 @@ const App = () => {
           imageData.file_name,
           selectedMethod.id
         );
-        console.log("Comparison result:", result);
-        setComparisonResults([{ result, methods: [selectedMethod.name], objectType: selectedObject.object_type }]); // Store single result as an array
-        setCompareAllSelected(false); // Set compare_all as not selected
-        setSubmitted(false); // Reset submitted state
+        setComparisonResults([{ result, methods: [selectedMethod.name], objectType: selectedObject.object_type }]);
+        setCompareAllSelected(false);
+        setSubmitted(false);
       }
 
-      setComparisonCategory(selectedCategory.id); // Preserve the category ID used for comparison
-      setLoading(false); // Set loading state to false
+      setComparisonCategory(selectedCategory.id);
+      setLoading(false);
     }
   };
 
@@ -160,26 +151,21 @@ const App = () => {
       const newRankings = { ...prev };
       const currentRankings = newRankings[currentCombination] || {};
 
-      // If there was a previous rank, remove it
       if (prevRank) {
         delete currentRankings[Object.keys(currentRankings).find(key => currentRankings[key] === prevRank)];
       }
 
-      // Remove the rank from any result that currently has it
       Object.keys(currentRankings).forEach(key => {
         if (currentRankings[key] === rank) {
           delete currentRankings[key];
         }
       });
 
-      // If rank is null, it means it should be moved to results-grid
       if (rank !== null) {
-        // Set the rank for the selected result
         currentRankings[resultString] = rank;
       }
 
       newRankings[currentCombination] = currentRankings;
-      console.log(`Updated rankings:`, newRankings[currentCombination]); // Log updated rankings
       return newRankings;
     });
   };
@@ -197,7 +183,7 @@ const App = () => {
     });
 
     const rankingsData = {
-      session_id: sessionId, // Include the unique session ID
+      session_id: sessionId,
       image_file_name: imageData.file_name,
       object_id: selectedObject.object_id,
       category_id: selectedCategory.id,
@@ -207,10 +193,9 @@ const App = () => {
     const response = await submitRankings(rankingsData);
 
     if (response.status === 'success') {
-      // Change button text and color
       setSubmitted(true);
-      setShowLeaderboard(true); // Show leaderboard after successful submission
-      setScrollToLeaderboard(true); // Set flag to scroll to leaderboard
+      setShowLeaderboard(true);
+      setScrollToLeaderboard(true);
     }
   };
 
@@ -218,71 +203,74 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Image Object Selector</h1>
-      <ImageUploader onImageProcessed={handleImageProcessed} setLoading={setIsProcessing} />
-      {isProcessing && <LoadingIndicator message='Detecting Objects'/>} {/* Conditionally render loading indicator */}
-      {imageData && (
-        <>
-          <ImageDisplay
-            imageData={imageData}
-            onSelectObject={handleSelectObject}
-            isProcessing={isProcessing} // Pass isProcessing state
+      <header className="app-header">
+        <h1>Image Object Selector</h1>
+      </header>
+      <main className="app-main">
+        <ImageUploader onImageProcessed={handleImageProcessed} setLoading={setIsProcessing} />
+        {isProcessing && <LoadingIndicator message="Detecting Objects" />}
+        {imageData && (
+          <>
+            <ImageDisplay
+              imageData={imageData}
+              onSelectObject={handleSelectObject}
+              isProcessing={isProcessing}
             />
-            <CategorySelector 
-            selectedCategory={selectedCategory} 
-            onSelectCategory={handleSelectCategory} 
+            <CategorySelector
+              selectedCategory={selectedCategory}
+              onSelectCategory={handleSelectCategory}
             />
-            <CompareMethodSelector 
-            selectedMethod={selectedMethod} 
-            onSelectMethod={handleSelectMethod} 
+            <CompareMethodSelector
+              selectedMethod={selectedMethod}
+              onSelectMethod={handleSelectMethod}
             />
             <button
-            className={`compare-button ${isCompareButtonDisabled ? 'disabled' : ''}`}
-            onClick={handleCompare}
-            disabled={isCompareButtonDisabled}
+              className={`compare-button ${isCompareButtonDisabled ? 'disabled' : ''}`}
+              onClick={handleCompare}
+              disabled={isCompareButtonDisabled}
             >
-            Compare
+              Compare
             </button>
             {isCompareButtonDisabled && (
-            <p className="validation-message">Select a valid object, category, and method to compare</p>
+              <p className="validation-message">Select a valid object, category, and method to compare</p>
             )}
           </>
-          )}
-          {loading && <LoadingIndicator message="Getting Comparisons" />} {/* Conditionally render loading indicator */}
-          {!loading && comparisonResults.length > 0 && (
+        )}
+        {loading && <LoadingIndicator message="Getting Comparisons" />}
+        {!loading && comparisonResults.length > 0 && (
           <div className="results-container">
             {comparisonResults.map(({ result, methods, objectType }, index) => (
-            <div key={index} className="result-with-ranking">
-              <ResultsDisplay 
-              resultString={result.most_similar} 
-              maskUrl={result.mask_url} 
-              categoryId={comparisonCategory} // Use preserved comparison category ID
-                objectType={objectType} // Use preserved object type
-                compareMethods={methods} // Pass compareMethods used in the comparison
-              />
-            </div>
-          ))}
-          {compareAllSelected && comparisonResults.length > 1 && (
-            <>
-              <RankingDisplay
-                results={comparisonResults}
-                categoryId={comparisonCategory} // Use preserved comparison category ID
-                selectedRanks={rankings[currentCombination] || {}}
-                onRankingSelect={handleRankingSelect}
-              />
-              <button
-                className={`submit-rankings-button ${isSubmitDisabled ? 'disabled' : submitted ? 'submitted' : ''}`}
-                onClick={handleSubmitRankings}
-                disabled={isSubmitDisabled}
-                style={{ cursor: submitted ? 'not-allowed' : 'pointer', backgroundColor: submitted ? '#4CAF50' : ''}}
-              >
-                {submitted ? 'Submitted!' : 'Submit Rankings'}
-              </button>
-            </>
-          )}
-        </div>
-      )}
-      {showLeaderboard && <div ref={leaderboardRef}><LeaderboardDisplay /></div>}
+              <div key={index} className="result-with-ranking">
+                <ResultsDisplay
+                  resultString={result.most_similar}
+                  maskUrl={result.mask_url}
+                  categoryId={comparisonCategory}
+                  objectType={objectType}
+                  compareMethods={methods}
+                />
+              </div>
+            ))}
+            {compareAllSelected && comparisonResults.length > 1 && (
+              <>
+                <RankingDisplay
+                  results={comparisonResults}
+                  categoryId={comparisonCategory}
+                  selectedRanks={rankings[currentCombination] || {}}
+                  onRankingSelect={handleRankingSelect}
+                />
+                <button
+                  className={`submit-rankings-button ${isSubmitDisabled ? 'disabled' : submitted ? 'submitted' : ''}`}
+                  onClick={handleSubmitRankings}
+                  disabled={isSubmitDisabled}
+                >
+                  {submitted ? 'Submitted!' : 'Submit Rankings'}
+                </button>
+              </>
+            )}
+          </div>
+        )}
+        {showLeaderboard && <div ref={leaderboardRef}><LeaderboardDisplay /></div>}
+      </main>
     </div>
   );
 };

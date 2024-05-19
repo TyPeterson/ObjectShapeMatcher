@@ -1,7 +1,9 @@
+/* LeaderboardDisplay.css */
+
 .leaderboard {
   text-align: center;
   margin-top: 20px;
-  padding-bottom: 50px; /* Ensure space at the bottom */
+  padding-bottom: 50px;
   background-color: #f6f6f6;
 }
 

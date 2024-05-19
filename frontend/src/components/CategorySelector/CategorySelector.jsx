@@ -24,5 +24,4 @@ const CategorySelector = ({ selectedCategory, onSelectCategory }) => {
   );
 };
 
-
 export default CategorySelector;

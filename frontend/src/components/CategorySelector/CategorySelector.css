@@ -1,3 +1,5 @@
+/* CategorySelector.css */
+
 .category-selector {
   display: flex;
   justify-content: center;
@@ -14,7 +16,7 @@
 .category-item.selected {
   border: 2px solid #007bff;
   border-radius: 5px;
-  transition: border;
+  transition: border 0.3s;
 }
 
 .category-thumbnail {
