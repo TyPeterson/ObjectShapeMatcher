@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './ImageDisplay.css';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
+// Example Python dictionary mapping object_id to RGB colors
 const objectColors = {
   0: [200, 0, 0],
   1: [0, 200, 0],
@@ -47,6 +48,7 @@ const ImageDisplay = ({ imageData, onSelectObject, isProcessing }) => {
 
   useEffect(() => {
     setSelectedObjectId(null);
+    setHoveredObjectId(null); // Reset hoveredObjectId when new image is uploaded
     const newMaskCoords = {};
     imageData.objects.forEach((object, index) => {
       calculateMaskCoords(object.mask_coords, object.object_id);
@@ -61,18 +63,20 @@ const ImageDisplay = ({ imageData, onSelectObject, isProcessing }) => {
 
   const calculateMaskCoords = (maskCoords, objectId) => {
     const image = new Image();
-    image.crossOrigin = "anonymous";
+    image.crossOrigin = "anonymous"; // Enable CORS
     image.src = imageData.composite_image_url;
 
     image.onload = () => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
 
+      // Set canvas dimensions to match the original image
       canvas.width = image.width;
       canvas.height = image.height;
 
       ctx.drawImage(image, 0, 0);
 
+      // Scale maskCoords to fit the image dimensions
       const scaleX = canvas.width / maskCoords[0].length;
       const scaleY = canvas.height / maskCoords.length;
 
@@ -82,6 +86,7 @@ const ImageDisplay = ({ imageData, onSelectObject, isProcessing }) => {
         const scaledRow = [];
         for (let x = 0; x < maskCoords[y].length; x++) {
           if (maskCoords[y][x] === 1) {
+            // Store the scaled coordinates
             scaledRow.push(1);
           } else {
             scaledRow.push(0);
@@ -146,12 +151,17 @@ const ImageDisplay = ({ imageData, onSelectObject, isProcessing }) => {
 
   const getCurrentImageSrc = () => {
     if (hoveredObjectId != null) {
-      return imageData.objects.find(obj => obj.object_id === hoveredObjectId).colored_mask_path;
+      const hoveredObject = imageData.objects.find(obj => obj.object_id === hoveredObjectId);
+      if (hoveredObject) {
+        return hoveredObject.colored_mask_path;
+      }
     } else if (selectedObjectId != null) {
-      return imageData.objects.find(obj => obj.object_id === selectedObjectId).colored_mask_path;
-    } else {
-      return imageData.composite_image_url;
+      const selectedObject = imageData.objects.find(obj => obj.object_id === selectedObjectId);
+      if (selectedObject) {
+        return selectedObject.colored_mask_path;
+      }
     }
+    return imageData.composite_image_url;
   };
 
   const getButtonColor = (objectId) => {
@@ -161,13 +171,14 @@ const ImageDisplay = ({ imageData, onSelectObject, isProcessing }) => {
 
   return (
     <div className="image-display-container">
-      <img
-        ref={imageRef}
-        src={getCurrentImageSrc()}
-        alt="Composite or Selected Object"
-        onClick={handleImageClick}
-        onMouseMove={handleImageMouseMove}
-      />
+        <img
+          ref={imageRef}
+          src={getCurrentImageSrc()}
+          alt="Composite or Selected Object"
+          onClick={handleImageClick}
+          onMouseMove={handleImageMouseMove}
+        />
+
       <div className="buttons">
         {imageData.objects.map(obj => (
           <button
