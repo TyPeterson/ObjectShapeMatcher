@@ -172,10 +172,14 @@ const App = () => {
         }
       });
 
-      // Set the rank for the selected result
-      currentRankings[resultString] = rank;
+      // If rank is null, it means it should be moved to results-grid
+      if (rank !== null) {
+        // Set the rank for the selected result
+        currentRankings[resultString] = rank;
+      }
 
       newRankings[currentCombination] = currentRankings;
+      console.log(`Updated rankings:`, newRankings[currentCombination]); // Log updated rankings
       return newRankings;
     });
   };
@@ -270,6 +274,7 @@ const App = () => {
                 className={`submit-rankings-button ${isSubmitDisabled ? 'disabled' : submitted ? 'submitted' : ''}`}
                 onClick={handleSubmitRankings}
                 disabled={isSubmitDisabled}
+                style={{ cursor: submitted ? 'not-allowed' : 'pointer', backgroundColor: submitted ? '#4CAF50' : ''}}
               >
                 {submitted ? 'Submitted!' : 'Submit Rankings'}
               </button>
