@@ -56,7 +56,7 @@ def process_image(image_path):
 
 
 
-def get_most_simliar(mask_coords, category_id, object_id, image_file_name, method="hamming"):
+def get_most_similar(mask_coords, category_id, object_id, image_file_name, method="hamming"):
     mask_coords = np.array(mask_coords)
     data = app.config[f'{category_id}_NPZ_DATA']
 

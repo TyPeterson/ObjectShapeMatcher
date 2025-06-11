@@ -3,7 +3,7 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import os
 
-from services import process_image as service_process_image, get_most_simliar
+from services import process_image as service_process_image, get_most_similar
 from utils import load_npz_data, load_yolo_model
 
 
@@ -49,7 +49,7 @@ def create_app():
         compare_method = data.get('compare_method')
         if not mask_coords or not category_id or not image_file_name or not compare_method:
             return jsonify({'error': 'Missing required parameters'}), 400
-        result = get_most_simliar(mask_coords, category_id, object_id, image_file_name, method=compare_method)
+        result = get_most_similar(mask_coords, category_id, object_id, image_file_name, method=compare_method)
         return jsonify(result), 200
 
     @app.route('/api/objects/compare_all', methods=['POST'])
@@ -64,7 +64,7 @@ def create_app():
         results = {}
         methods = ['hamming', 'ssim', 'chamfer', 'hausdorff', 'dice', 'jaccard']
         for method in methods:
-            results[method] = get_most_simliar(mask_coords, category_id, object_id, image_file_name, method=method)
+            results[method] = get_most_similar(mask_coords, category_id, object_id, image_file_name, method=method)
         return jsonify(results), 200
 
     @app.route('/api/rankings/submit', methods=['POST'])
