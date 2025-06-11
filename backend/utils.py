@@ -123,7 +123,9 @@ def arr_to_binary(arr):
 # ------------------------------------------------------------------------------------------------------------
 
 def hamming_dist(arr1, arr2):
-  return np.sum(arr1 == arr2)
+  if arr1.shape != arr2.shape:
+    raise ValueError("Input arrays must have the same shape")
+  return np.mean(arr1 == arr2)
 
 # -------------------------------------------------------------------------------
 
